@@ -1,64 +1,61 @@
 package peter.hickling.queens;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class EightQueensDriver {
-    private int numberOfQueensToRemove;
-    private Queen queen;
-    private Set<String> allSolutions;
+    private Chessboard chessboard;
+    private int totalNumberOfAttempts;
 
-    public EightQueensDriver(Queen queen) {
-        this.queen = queen;
-        numberOfQueensToRemove = 0;
-        allSolutions = new HashSet<String>();
+    public EightQueensDriver(Chessboard chessboard) {
+        this.chessboard = chessboard;
     }
 
-    public Map<Integer, Integer> getQueens() {
-        return queen.getChessboard().placedQueens();
-    }
-
-    public int getNumberOfRemovedQueens() {
-        return numberOfQueensToRemove;
-    }
-
-    public Map<Integer, Integer> placeEightQueens() {
+    public Chessboard placeEightQueens() {
+        int totalAttempts = 0;
         int numberOfAttempts = 0;
+        int numberOfQueensToRemove = 0;
 
-        while (queen.getChessboard().placedQueens().size() < 8) {
-            Random random = new Random();
+        while (chessboard.placedQueens().size() < 8) {
             numberOfAttempts++;
 
-            if (queen.placeQueen(random.nextInt(8) + 1, random.nextInt(8) + 1)) {
+            if (chessboard.addQueen(Queen.aQueen().x(ThreadLocalRandom.current().nextInt(0, 8)).y(ThreadLocalRandom.current().nextInt(0, 8)).build())) {
+                totalAttempts = totalAttempts + numberOfAttempts;
                 numberOfAttempts = 0;
             }
 
             if (numberOfAttempts > 50) {
                 numberOfQueensToRemove++;
 
-                if (numberOfQueensToRemove < queen.getChessboard().placedQueens().size()) {
-                    queen.removeRandomQueen(numberOfQueensToRemove);
-                }
-
-                else {
+                if (numberOfQueensToRemove < chessboard.placedQueens().size()) {
+                    removeRandomQueens(numberOfQueensToRemove);
+                } else {
                     numberOfQueensToRemove = 0;
                 }
+                totalAttempts = totalAttempts + numberOfAttempts;
                 numberOfAttempts = 0;
             }
         }
-        return queen.getChessboard().placedQueens();
+        totalNumberOfAttempts = totalAttempts + totalNumberOfAttempts;
+        return chessboard;
     }
 
     public Set<String> getAllSolutions() {
-
+        Set<String> allSolutions = new HashSet<>();
         while (allSolutions.size() < 92) {
-            allSolutions.add(placeEightQueens().toString());
-            queen.removeAllQueens();
+            allSolutions.add(placeEightQueens().placedQueens().toString());
+            chessboard.empty();
         }
-
+        System.out.println(totalNumberOfAttempts);
         return allSolutions;
     }
 
+    private void removeRandomQueens(int numberOfQueensToRemove) {
+        for (int i = 0; i < numberOfQueensToRemove; i++) {
+            Queen queenToRemove = chessboard.placedQueens().stream().collect(Collectors.toList()).get(ThreadLocalRandom.current().nextInt(0, chessboard.placedQueens().size()));
+            chessboard.removeQueen(queenToRemove);
+        }
+    }
 }

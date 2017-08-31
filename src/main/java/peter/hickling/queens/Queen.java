@@ -1,69 +1,61 @@
 package peter.hickling.queens;
 
-import java.util.Random;
+public class Queen implements Comparable<Queen> {
 
-public class Queen {
+    private Integer x;
+    private Integer y;
 
-    private Chessboard board;
-
-    public Queen(Chessboard board) {
-        this.board = board;
+    private Queen(Builder builder) {
+        this.x = builder.x;
+        this.y = builder.y;
     }
 
-    public boolean placeQueen(int horizontal, int vertical) {
-        boolean canPlace = true;
-        if (checkHorizontal(horizontal))
-            canPlace = false;
-        if (checkVertical(vertical))
-            canPlace = false;
-        if (checkDiagonal(horizontal, vertical))
-            canPlace = false;
-        if (canPlace) {
-            board.addQueen(horizontal, vertical);
-            return true;
-        }
-        return false;
+    public int getX() {
+        return new Integer(x);
     }
 
-    public void removeRandomQueen(int numberOfQueensToRemove) {
-
-        for (int i = 0; i < numberOfQueensToRemove; i++) {
-            Random random = new Random();
-            int randomNumber = random.nextInt(board.placedQueens().size());
-            board.removeQueen(randomNumber);
-        }
-
+    public int getY() {
+        return new Integer(y);
     }
 
-    public Chessboard getChessboard() {
-        return board;
+    public static Builder aQueen() {
+        return new Builder();
     }
 
-    private boolean checkHorizontal(int horizontal) {
-        return board.placedQueens().containsKey(horizontal);
+    public int hashCode() {
+
+        return x.hashCode() ^ y.hashCode();
     }
 
-    private boolean checkVertical(int vertical) {
-        return board.placedQueens().containsValue(vertical);
+    public boolean equals(Object obj) {
+        return obj instanceof Queen && x.equals(((Queen) obj).getX()) && y.equals(((Queen) obj).getY());
     }
 
-    private boolean checkDiagonal(int horizontal, int vertical) {
+    public String toString() {
+        return String.format("[%d, %d]", this.getX(), this.getY());
+    }
 
-        for (int i = -8; i < 9; i++) {
-            if (board.placedQueens().containsKey(horizontal + i)
-                    && board.placedQueens().get(horizontal + i).equals(vertical + i)) {
-                return true;
-            }
-            if (board.placedQueens().containsKey(horizontal - i)
-                    && board.placedQueens().get(horizontal - i).equals(vertical + i)) {
-                return true;
-            }
+    @Override
+    public int compareTo(Queen queen) {
+        return x - queen.getX();
+    }
+
+    public static class Builder {
+        private Integer x;
+        private Integer y;
+
+        public Builder x(Integer x) {
+            this.x = x;
+            return this;
         }
 
-        return false;
-    }
+        public Builder y(Integer y) {
+            this.y = y;
+            return this;
+        }
 
-    public void removeAllQueens() {
-        board.empty();
+        public Queen build() {
+            return new Queen(this);
+        }
     }
 }

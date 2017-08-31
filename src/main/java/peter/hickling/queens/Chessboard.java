@@ -1,28 +1,36 @@
 package peter.hickling.queens;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Chessboard {
-    private Map<Integer, Integer> coordinates;
+    private Set<Queen> queens;
+    private ChessboardChecker chessboardChecker;
 
-    public Chessboard() {
-        coordinates = new TreeMap<Integer, Integer>();
+    public Chessboard(ChessboardChecker chessboardChecker) {
+        queens = new HashSet<Queen>();
+        this.chessboardChecker = chessboardChecker;
     }
 
-    public Map<Integer, Integer> placedQueens() {
-        return coordinates;
+    public Set<Queen> placedQueens() {
+        return new TreeSet<>(queens);
     }
 
-    public void addQueen(int horizontal, int vertical) {
-        coordinates.put(horizontal, vertical);
+    public void removeQueen(Queen queen) {
+        queens.remove(queen);
     }
 
-    public void removeQueen(int index) {
-        coordinates.remove(coordinates.keySet().toArray()[index]);
+    public boolean addQueen(Queen queen) {
+        if(chessboardChecker.canPlaceQueen(this, queen)) {
+            queens.add(queen);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void empty() {
-        coordinates.clear();
+        queens.clear();
     }
 }

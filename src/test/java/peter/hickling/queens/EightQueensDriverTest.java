@@ -7,39 +7,23 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import java.util.Set;
+
 public class EightQueensDriverTest {
 
     @Test
-    public void placeSomeQueens() {
-        EightQueensDriver driver = new EightQueensDriver(new Queen(new Chessboard()));
-        driver.placeEightQueens();
-
-        assertThat(driver.getQueens().size(), is(not(0)));
-
+    public void canPlaceEightQueens() {
+        EightQueensDriver driver = new EightQueensDriver(new Chessboard(new ChessboardChecker()));
+        Chessboard chessboard = driver.placeEightQueens();
+        System.out.println(chessboard.placedQueens());
+        assertThat(chessboard.placedQueens().size(), is(8));
     }
 
     @Test
-    public void removesIfTooManyAttempts() {
-        EightQueensDriver driver = new EightQueensDriver(new Queen(new Chessboard()));
-        driver.placeEightQueens();
-
-        assertThat(driver.getNumberOfRemovedQueens(), is(not(0)));
-
+    public void canFindAllSolutions() {
+        EightQueensDriver driver = new EightQueensDriver(new Chessboard(new ChessboardChecker()));
+        Set<String> allSolutions = driver.getAllSolutions();
+        System.out.println(allSolutions);
+        assertThat(allSolutions.size(), is(92));
     }
-
-    @Test
-    public void eightQueensPlaced() {
-        EightQueensDriver driver = new EightQueensDriver(new Queen(new Chessboard()));
-        driver.placeEightQueens();
-
-        assertThat(driver.getQueens().size(), is(equalTo(8)));
-    }
-
-    @Test
-    public void allSolutionsFound() {
-        EightQueensDriver driver = new EightQueensDriver(new Queen(new Chessboard()));
-
-        assertThat(driver.getAllSolutions().size(), is(equalTo(92)));
-    }
-
 }

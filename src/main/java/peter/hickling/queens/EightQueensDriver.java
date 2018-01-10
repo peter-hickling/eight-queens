@@ -68,12 +68,12 @@ public class EightQueensDriver {
             for (int i = 0; i < 20; i++) {
                 executor.execute(new SolutionTask());
             }
-            System.out.println(totalNumberOfAttempts);
             return allSolutionsLatch.getAllSolutions();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return null;
         } finally {
+            System.out.println(totalNumberOfAttempts);
             executor.shutdownNow();
         }
     }

@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Chessboard {
-    private Set<Queen> queens;
-    private ChessboardChecker chessboardChecker;
+    private final Set<Queen> queens;
+    private final ChessboardChecker chessboardChecker;
 
     public Chessboard(ChessboardChecker chessboardChecker) {
         queens = new HashSet<Queen>();
@@ -22,7 +22,7 @@ public class Chessboard {
     }
 
     public boolean addQueen(Queen queen) {
-        if(chessboardChecker.canPlaceQueen(this, queen)) {
+        if (chessboardChecker.canPlaceQueen(this, queen)) {
             queens.add(queen);
             return true;
         } else {

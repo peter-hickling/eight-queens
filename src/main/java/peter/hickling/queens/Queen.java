@@ -2,8 +2,8 @@ package peter.hickling.queens;
 
 public class Queen implements Comparable<Queen> {
 
-    private Integer x;
-    private Integer y;
+    private final Integer x;
+    private final Integer y;
 
     private Queen(Builder builder) {
         this.x = builder.x;
@@ -11,11 +11,11 @@ public class Queen implements Comparable<Queen> {
     }
 
     public int getX() {
-        return new Integer(x);
+        return x;
     }
 
     public int getY() {
-        return new Integer(y);
+        return y;
     }
 
     public static Builder aQueen() {
@@ -41,15 +41,15 @@ public class Queen implements Comparable<Queen> {
     }
 
     public static class Builder {
-        private Integer x;
-        private Integer y;
+        private int x;
+        private int y;
 
-        public Builder x(Integer x) {
+        public Builder x(int x) {
             this.x = x;
             return this;
         }
 
-        public Builder y(Integer y) {
+        public Builder y(int y) {
             this.y = y;
             return this;
         }

@@ -2,7 +2,8 @@ package peter.hickling.queens;
 
 public class ChessboardChecker {
     public boolean canPlaceQueen(Chessboard chessboard, Queen queen) {
-        return checkHorizontal(chessboard, queen) && checkVertical(chessboard, queen) && checkDiagonal(chessboard, queen);
+        return checkHorizontal(chessboard, queen) && checkVertical(chessboard, queen)
+                && checkDiagonal(chessboard, queen);
     }
 
     private boolean checkHorizontal(Chessboard chessboard, Queen queen) {
@@ -14,6 +15,11 @@ public class ChessboardChecker {
     }
 
     private boolean checkDiagonal(Chessboard chessboard, Queen queen) {
-        return !chessboard.placedQueens().stream().anyMatch(checkQueen -> (((checkQueen.getY() - queen.getY()) - (checkQueen.getX() - queen.getX())) == 0) || (((checkQueen.getY() - queen.getY()) + (checkQueen.getX() - queen.getX())) == 0));
+        return !chessboard
+                .placedQueens()
+                .stream()
+                .anyMatch(
+                        checkQueen -> (((checkQueen.getY() - queen.getY()) - (checkQueen.getX() - queen.getX())) == 0)
+                                || (((checkQueen.getY() - queen.getY()) + (checkQueen.getX() - queen.getX())) == 0));
     }
 }

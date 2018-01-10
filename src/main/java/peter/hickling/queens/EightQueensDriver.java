@@ -50,6 +50,7 @@ public class EightQueensDriver {
             }
 
             allSolutionsLatch.addValue(chessboard.placedQueens().toString());
+            executor.execute(new SolutionTask());
         }
 
         private void removeRandomQueens(int numberOfQueensToRemove, Chessboard chessboard) {
@@ -64,7 +65,7 @@ public class EightQueensDriver {
     public Set<String> getAllSolutions() {
         try {
             ((ThreadPoolExecutor) executor).setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-            while (!allSolutionsLatch.isSet()) {
+            for (int i = 0; i < 20; i++) {
                 executor.execute(new SolutionTask());
             }
             System.out.println(totalNumberOfAttempts);

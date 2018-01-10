@@ -22,6 +22,8 @@ public class QueenTest {
 
     @Test
     public void twoQueensShouldBeTheSameIfTheyHaveTheSameCoordinates() {
-        assertThat(Queen.aQueen().x(randomInteger).y(randomInteger).build().equals(Queen.aQueen().x(randomInteger).y(randomInteger).build()), is(true));
+        assertThat(
+                Queen.aQueen().x(randomInteger).y(randomInteger).build()
+                        .equals(Queen.aQueen().x(randomInteger).y(randomInteger).build()), is(true));
     }
 }

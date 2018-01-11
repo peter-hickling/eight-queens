@@ -14,7 +14,7 @@ public class Chessboard {
     }
 
     public Set<Queen> placedQueens() {
-        return new TreeSet<>(queens);
+        return new HashSet<>(queens);
     }
 
     public void removeQueen(Queen queen) {

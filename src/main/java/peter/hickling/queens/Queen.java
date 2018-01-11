@@ -1,6 +1,9 @@
 package peter.hickling.queens;
 
-public class Queen implements Comparable<Queen> {
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+public class Queen {
 
     private final Integer x;
     private final Integer y;
@@ -23,21 +26,16 @@ public class Queen implements Comparable<Queen> {
     }
 
     public int hashCode() {
-
-        return x.hashCode() ^ y.hashCode();
+        return new HashCodeBuilder().append(x).append(y).toHashCode();
     }
 
     public boolean equals(Object obj) {
-        return obj instanceof Queen && x.equals(((Queen) obj).getX()) && y.equals(((Queen) obj).getY());
+        Queen other = (Queen) obj;
+        return new EqualsBuilder().append(this.getX(), other.getX()).append(this.getY(), other.getY()).isEquals();
     }
 
     public String toString() {
         return String.format("[%d, %d]", this.getX(), this.getY());
-    }
-
-    @Override
-    public int compareTo(Queen queen) {
-        return x - queen.getX();
     }
 
     public static class Builder {

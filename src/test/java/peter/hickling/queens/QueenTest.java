@@ -21,9 +21,19 @@ public class QueenTest {
     }
 
     @Test
-    public void twoQueensShouldBeTheSameIfTheyHaveTheSameCoordinates() {
+    public void twoQueensShouldBeEqualIfTheyHaveTheSameCoordinates() {
         assertThat(
                 Queen.aQueen().x(randomInteger).y(randomInteger).build()
                         .equals(Queen.aQueen().x(randomInteger).y(randomInteger).build()), is(true));
+    }
+
+    @Test
+    public void twoQueensShouldBeDifferentIfTheyHaveDifferentCoordinates() {
+        Integer randomIntegerOne = ThreadLocalRandom.current().nextInt(0, 8);
+        Integer randomIntegerTwo = ThreadLocalRandom.current().nextInt(0, 8);
+
+        assertThat(
+                Queen.aQueen().x(randomIntegerOne).y(randomIntegerTwo).build()
+                        .equals(Queen.aQueen().x(randomIntegerTwo + 1).y(randomIntegerTwo + 1).build()), is(false));
     }
 }

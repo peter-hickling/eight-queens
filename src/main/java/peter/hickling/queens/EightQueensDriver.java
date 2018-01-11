@@ -1,6 +1,8 @@
 package peter.hickling.queens;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
@@ -11,7 +13,7 @@ import java.util.stream.Collectors;
 public class EightQueensDriver {
     private final AtomicInteger totalNumberOfAttempts = new AtomicInteger(0);
     private final Object lock = "lock for total number of attempts";
-    private final AllSolutionsLatch allSolutionsLatch = new AllSolutionsLatch();
+    private final AllSolutionsLatch<Queen> allSolutionsLatch = new AllSolutionsLatch<>(92);
     private final ExecutorService executor = Executors
             .newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
@@ -49,7 +51,7 @@ public class EightQueensDriver {
                 totalNumberOfAttempts.set(totalNumberOfAttempts.addAndGet(totalAttempts));
             }
 
-            allSolutionsLatch.addValue(chessboard.placedQueens().toString());
+            allSolutionsLatch.addValue(chessboard.placedQueens());
             executor.execute(new SolutionTask());
         }
 
@@ -62,7 +64,7 @@ public class EightQueensDriver {
         }
     }
 
-    public Set<String> getAllSolutions() {
+    public Set<Set<Queen>> getAllSolutions() {
         try {
             ((ThreadPoolExecutor) executor).setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
             for (int i = 0; i < 20; i++) {

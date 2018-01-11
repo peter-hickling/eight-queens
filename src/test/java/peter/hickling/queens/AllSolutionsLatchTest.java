@@ -40,6 +40,25 @@ public class AllSolutionsLatchTest {
         assertThat(allSolutionsSmallLatch.isClosed(), CoreMatchers.is(false));
     }
 
+    @Test
+    public void shouldBlockIfResultNotReady() throws InterruptedException {
+        ExecutorService executor = Executors.newCachedThreadPool();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    allSolutionsSmallLatch.getAllSolutions();
+                    fail();
+                } catch (Exception success) {
+                }
+            }
+        });
+        Thread.sleep(500);
+        executor.shutdown();
+
+        assertThat(executor.isShutdown(), CoreMatchers.is(true));
+    }
+
     @Test(timeout=1000)
     public void safetyTest() throws InterruptedException, BrokenBarrierException {
         ExecutorService executor = Executors.newCachedThreadPool();

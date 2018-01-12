@@ -10,8 +10,8 @@ import static org.junit.Assert.*;
 
 public class AllSolutionsLatchTest {
     private final static Integer BIG_LATCH_MAX = 100000;
-    private final AllSolutionsLatch<Integer> allSolutionsSmallLatch = new AllSolutionsLatch(3);
-    private final AllSolutionsLatch<Integer> allSolutionsBigLatch = new AllSolutionsLatch(BIG_LATCH_MAX);
+    private final AllSolutionsLatch<Integer> allSolutionsSmallLatch = new AllSolutionsLatch<>(3);
+    private final AllSolutionsLatch<Integer> allSolutionsBigLatch = new AllSolutionsLatch<>(BIG_LATCH_MAX);
 
     @Test
     public void theLatchShouldNotCloseIfTheNumberOfSolutionsIsBelowTheTotal() {
@@ -59,12 +59,12 @@ public class AllSolutionsLatchTest {
         assertThat(executor.isShutdown(), CoreMatchers.is(true));
     }
 
-    @Test(timeout=1000)
+    @Test(timeout = 1000)
     public void safetyTest() throws InterruptedException, BrokenBarrierException {
         ExecutorService executor = Executors.newCachedThreadPool();
         CyclicBarrier cyclicBarrier = new CyclicBarrier(21);
         for (int i = 0; i < 20; i++) {
-            executor.execute(new TestTask(BIG_LATCH_MAX*i, allSolutionsBigLatch, cyclicBarrier, BIG_LATCH_MAX));
+            executor.execute(new TestTask(BIG_LATCH_MAX * i, allSolutionsBigLatch, cyclicBarrier, BIG_LATCH_MAX));
         }
         cyclicBarrier.await();
         cyclicBarrier.await();
@@ -78,7 +78,8 @@ public class AllSolutionsLatchTest {
         private final AllSolutionsLatch<Integer> latch;
         private final CyclicBarrier barrier;
 
-        public TestTask(Integer startValue, AllSolutionsLatch<Integer> latch, CyclicBarrier barrier, Integer numberOfValuesToAdd) {
+        public TestTask(Integer startValue, AllSolutionsLatch<Integer> latch, CyclicBarrier barrier,
+                Integer numberOfValuesToAdd) {
             this.startValue = startValue;
             this.latch = latch;
             this.barrier = barrier;

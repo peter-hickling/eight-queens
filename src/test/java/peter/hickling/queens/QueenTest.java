@@ -36,4 +36,14 @@ public class QueenTest {
                 Queen.aQueen().x(randomIntegerOne).y(randomIntegerTwo).build()
                         .equals(Queen.aQueen().x(randomIntegerTwo + 1).y(randomIntegerTwo + 1).build()), is(false));
     }
+
+    @Test
+    public void nextPositionShouldAddOneToYPosition() {
+        assertThat(Queen.aQueen().x(1).y(2).build().nextPosition().getY(), is(3));
+    }
+
+    @Test
+    public void nextPositionShouldAddSetYToZeroIfTheNextMoveWillTakeItOffTheBoard() {
+        assertThat(Queen.aQueen().x(1).y(7).build().nextPosition().getY(), is(0));
+    }
 }

@@ -1,8 +1,6 @@
 package peter.hickling.queens;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,7 +8,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class EightQueensDriver {
+public class RandomEightQueensDriverWithKnowledgeOfTotalNumberOfSolutions {
     private final AtomicInteger totalNumberOfAttempts = new AtomicInteger(0);
     private final Object lock = "lock for total number of attempts";
     private final AllSolutionsLatch<Queen> allSolutionsLatch = new AllSolutionsLatch<>(92);

@@ -1,19 +1,22 @@
 package peter.hickling.queens;
 
 import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Chessboard {
-    private final Set<Queen> queens;
+    private final HashSet<Queen> queens;
     private final ChessboardChecker chessboardChecker;
 
     public Chessboard(ChessboardChecker chessboardChecker) {
-        queens = new HashSet<Queen>();
+        queens = new HashSet<>();
         this.chessboardChecker = chessboardChecker;
     }
 
-    public Set<Queen> placedQueens() {
+    public Chessboard(ChessboardChecker chessboardChecker, HashSet<Queen> placedQueens) {
+        queens = placedQueens;
+        this.chessboardChecker = chessboardChecker;
+    }
+
+    public HashSet<Queen> placedQueens() {
         return new HashSet<>(queens);
     }
 
@@ -30,7 +33,15 @@ public class Chessboard {
         }
     }
 
-    public void empty() {
-        queens.clear();
+    public void putQueenOnBoardEvenIfIllegal(Queen queen) {
+        queens.add(queen);
+    }
+
+    public boolean moveQueenToNextPositionAndCheckIfSolution(int x) {
+        Queen queenToMove = queens.stream().filter(queen -> queen.getX() == x).findFirst().get();
+        queens.remove(queenToMove);
+        queens.add(queenToMove.nextPosition());
+
+        return chessboardChecker.isSolution(this);
     }
 }

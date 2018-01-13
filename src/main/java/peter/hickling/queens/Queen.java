@@ -21,8 +21,20 @@ public class Queen {
         return y;
     }
 
+    public Queen nextPosition() {
+        if (y < 7) {
+            return Queen.from(this).y(y + 1).build();
+        } else {
+            return Queen.from(this).y(0).build();
+        }
+    }
+
     public static Builder aQueen() {
         return new Builder();
+    }
+
+    public static Builder from(Queen queen) {
+        return new Builder(queen);
     }
 
     public int hashCode() {
@@ -41,6 +53,14 @@ public class Queen {
     public static class Builder {
         private int x;
         private int y;
+
+        private Builder() {
+        }
+
+        private Builder(Queen queen) {
+            this.x = queen.getX();
+            this.y = queen.getY();
+        }
 
         public Builder x(int x) {
             this.x = x;
